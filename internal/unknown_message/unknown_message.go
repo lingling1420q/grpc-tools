@@ -1,4 +1,4 @@
-package main
+package unknown_message
 
 import (
 	"fmt"
@@ -31,7 +31,7 @@ func getNewMessageName() string {
 // a message descriptor which will mean all fields are included
 // in the JSON output.
 // TODO: this would probably be better implemented within github.com/jhump/protoreflect
-func generateDescriptorForUnknownMessage(message *dynamic.Message) *builder.MessageBuilder {
+func GenerateDescriptorForUnknownMessage(message *dynamic.Message) *builder.MessageBuilder {
 	fields := map[int32][]dynamic.UnknownField{}
 	for _, unknownFieldNum := range message.GetUnknownFields() {
 		fields[unknownFieldNum] = message.GetUnknownField(unknownFieldNum)
@@ -82,5 +82,5 @@ func handleWireBytes(instance dynamic.UnknownField) *builder.FieldType {
 		// looks like it wasn't a valid proto message
 		return builder.FieldTypeString()
 	}
-	return builder.FieldTypeMessage(generateDescriptorForUnknownMessage(dyn))
+	return builder.FieldTypeMessage(GenerateDescriptorForUnknownMessage(dyn))
 }

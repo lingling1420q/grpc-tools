@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bradleyjkemp/grpc-tools/internal"
+	"github.com/bradleyjkemp/grpc-tools/internal/unknown_message"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/jhump/protoreflect/desc"
@@ -53,7 +54,7 @@ func dumpInterceptor(knownMethods map[string]*desc.MethodDescriptor) grpc.Stream
 			}
 
 			if knownMethod == nil {
-				unknownMessage, err := generateDescriptorForUnknownMessage(dyn).Build()
+				unknownMessage, err := unknown_message.GenerateDescriptorForUnknownMessage(dyn).Build()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "failed to decode unknown message: %v\n", err)
 					continue
