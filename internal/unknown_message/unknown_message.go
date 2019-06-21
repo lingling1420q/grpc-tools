@@ -33,6 +33,7 @@ func getNewMessageName() string {
 // TODO: this would probably be better implemented within github.com/jhump/protoreflect
 func GenerateDescriptorForUnknownMessage(message *dynamic.Message) *builder.MessageBuilder {
 	fields := map[int32][]dynamic.UnknownField{}
+	fmt.Println("Unknown fields:", message.GetUnknownFields())
 	for _, unknownFieldNum := range message.GetUnknownFields() {
 		fields[unknownFieldNum] = message.GetUnknownField(unknownFieldNum)
 	}
@@ -55,7 +56,12 @@ func makeDescriptorForFields(fields map[int32][]dynamic.UnknownField) *builder.M
 			fieldType = builder.FieldTypeFixed64()
 		}
 		field := builder.NewField(fmt.Sprintf("_%d", fieldNum), fieldType)
-		field.SetNumber(fieldNum)
+		err := field.TrySetNumber(fieldNum)
+		if err != nil {
+			// Field number is invalid somehow: this is not a real field
+			// TODO: log this?
+			continue
+		}
 		if len(instances) > 1 {
 			field.SetRepeated()
 		}
