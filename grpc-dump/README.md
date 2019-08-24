@@ -39,6 +39,7 @@ Each message has the format:
   "messages" : [
     {
       "message_origin" : "server|client",
+      "timestamp" : "RFC3339 timestamp",
       "raw_message" : "base64 encoded bytes of the raw protobuf",
       "message" : {
         // The parsed representation of the message
@@ -46,7 +47,7 @@ Each message has the format:
     }
   ],
   "error" : { // present if the gRPC status is not OK
-    "code" : 2,
+    "code" : "Status code string",
     "message" : "the gRPC error message"
   },
   "metadata" : { // the metadata present in the gRPC context

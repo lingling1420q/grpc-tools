@@ -1,4 +1,4 @@
-package main
+package fixture
 
 import (
 	"github.com/bradleyjkemp/grpc-tools/internal"
@@ -55,7 +55,7 @@ func (f fixture) intercept(srv interface{}, ss grpc.ServerStream, info *grpc.Str
 			}
 
 			if !found {
-				return status.Error(codes.Unavailable, "no matching saved responses for method "+info.FullMethod)
+				return status.Errorf(codes.Unavailable, "no matching saved responses for method %s and message", info.FullMethod)
 			}
 		}
 
